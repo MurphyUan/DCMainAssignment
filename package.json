@@ -1,0 +1,19 @@
+{
+  "name": "assignment",
+  "version": "1.0.0",
+  "description": "Main Assignment",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MurphyUan/DCMainAssignment.git"
+  },
+  "author": "Weeny",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MurphyUan/DCMainAssignment/issues"
+  },
+  "homepage": "https://github.com/MurphyUan/DCMainAssignment#readme"
+}
