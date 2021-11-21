@@ -1,0 +1,28 @@
+<html>
+<head>
+    <link href="/styles/tables.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>Module ID</th>
+            <th>Name</th>
+            <th>Credits</th>
+            <th>Update</th>
+            <th>Students</th>
+        </tr>
+        <!-- Display Each Module From Module List -->
+        <% modules.forEach((m) => { %>
+            <tr>
+                <td><%= m.mid %></td>
+                <td><%= m.name %></td>
+                <td><%= m.credits %></td>
+                <td><a href="/module/edit/<%= m.mid%>">Update</td>
+                <td><a href="/module/students/<%= m.mid%>">List</td>
+            </tr>
+        <% }) %>
+    </table>
+    <a href="http://localhost:3000/">Home</a>
+</body>
+</html>

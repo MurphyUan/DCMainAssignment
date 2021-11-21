@@ -1,0 +1,20 @@
+<head>
+    <link rel="stylesheet" href="/styles/tables.css">
+</head>
+<h1>Students studying <%= module %></h1>
+<table>
+    <tr>
+        <td>Student ID</td>
+        <td>Name</td>
+        <td>GPA</td>
+    </tr>
+    <!-- Display each Student studying  -->
+    <% students.forEach((student)=>{ %>
+        <tr>
+            <td><%= student.sid %></td>
+            <td><%= student.name %></td>
+            <td><%= student.gpa %></td>
+        </tr>
+    <% }) %>
+</table>
+<a href="http://localhost:3000/">Home</a>

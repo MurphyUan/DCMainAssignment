@@ -1,0 +1,28 @@
+<head>
+<link rel="stylesheet" href="/styles/tables.css">
+</head>
+
+<body>
+<h1>Students</h1>
+<form action="/addStudent" method="GET">
+    <input type="submit" value="Add"/>
+</form>
+<table>
+    <tr>
+        <td>Student ID</td>
+        <td>Name</td>
+        <td>GPA</td>
+        <td>Action</td>
+    </tr>
+    <!-- Display each Student -->
+    <% students.forEach((student)=>{ %>
+        <tr>
+            <td><%= student.sid %></td>
+            <td><%= student.name %></td>
+            <td><%= student.gpa %></td>
+            <td><a href="/students/delete/<%= student.sid %>">Delete</td>
+        </tr>
+    <% }) %>
+</table>
+<a href="http://localhost:3000/">Home</a>
+</body>

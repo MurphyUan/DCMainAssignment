@@ -1,0 +1,22 @@
+<body>
+    <h1>Edit Module</h1>
+    <!-- If Errors exist display each error as list item -->
+    <% if (errors != undefined) {%>
+        <ul>
+            <% errors.forEach((error) =>{ %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+    <!-- Form to Edit Current Module -->
+    <form action="/module/edit/:mid" method="POST">
+        <label>Module ID</label>
+        <input type="text" name="mid" value="<%= module.mid %>" readonly/><br>
+        <label>Name</label>
+        <input type="text" name="name" value="<%= module.name %>"/><br>
+        <label>Credits</label>
+        <input type="text" name="credits" value="<%= module.credits %>"/><br>
+        <input type="submit" value="Update"/>
+    </form>
+    <a href="http://localhost:3000/">Home</a>
+</body>
