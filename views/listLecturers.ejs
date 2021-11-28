@@ -1,0 +1,27 @@
+<html>
+<head>
+    <link href="/styles/tables.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <h1>Lecturers</h1>
+    <form action="/addLecturer" method="GET">
+        <input type="submit" value="Add"/>
+    </form>
+    <table>
+        <tr>
+        <td><b>Lecturer ID</b></td>
+        <td><b>Name</b></td>
+        <td><b>Dept</b></td>
+        <!-- Display each Lecturer -->
+        <% lecturers.forEach((lecturer)=>{ %>
+            <tr>
+                <td><%= lecturer._id %></td>
+                <td><%= lecturer.name %></td>
+                <td><%= lecturer.dept %></td>
+            </tr>
+        <% }) %>
+        </tr>
+    </table>
+    <a href="http://localhost:3000/">Home</a>
+</body>
+</html>

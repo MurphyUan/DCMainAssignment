@@ -5,6 +5,7 @@ var { check, validationResult } = require('express-validator')
 var ejs = require('ejs')
 //File Importing
 var mySQLDAO = require('./mySQLDAO')
+var mongoDAO = require('./mongoDAO')
 var app = express()
 
 app.set('view engine', 'ejs')
@@ -137,13 +138,48 @@ app.post('/addStudent', [
 //-----------------------MongoDB-------------------------
 //List Lecturers Page
 app.get('/listLecturers', (req, res) => {
-    res.send("<h1>List Lecturers<h1>")
-    res.render("listLecturers")
+    mongoDAO.find({})
+        .then((result)=>{
+            res.render("listLecturers", { lecturers: result })
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
 })
 //Add Lecturer Page
-app.get('/addLecturer', (req, res) => {
-    res.send("Add Lecturer")
+app.get('/addLecturer',(req, res) => {
+    res.render("addLecturer", { errors: undefined, _id: "", name: "", dept: "" })
 })
-app.post('/addLecturer', (req, res) => {
+app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lecturer ID must be 4 characters"),
+    check("name").isLength({min:5}).withMessage("Name must be atleast 5 characters"),
+    check("dept").isLength({min:3, max:3}).withMessage("Dept must be 3 characters long")], (req, res) => {
+
+        const errors = validationResult(req)
+        if(errors.isEmpty()){
+            mongoDAO.find({dept: req.body.dept})
+                .then((result) => {
+                    if(!result.length){
+                        errors.errors.push({msg: "Dept doesn't exist"})
+                        res.render("addLecturer", 
+                            {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept})
+                    }
+                    mongoDAO.insertInto({_id: req.body._id, name: req.body.name, dept: req.body.dept})
+                    .then(() => {
+                        res.redirect('/listLecturers')
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        errors.errors.push({msg: "_id already exists"})
+                        res.render("addLecturer", 
+                            {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept})
+                    })
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        } else {
+            res.render("addLecturer",
+                { errors: errors.errors, _id: req.body._id, name: req.body.name, dept: req.body.dept })
+        }
 
 })

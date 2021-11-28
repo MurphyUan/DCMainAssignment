@@ -9,7 +9,7 @@
         </ul>
     <% } %>
     <!-- Form to Edit Current Module -->
-    <form action="/module/edit/:mid" method="POST">
+    <form action="/module/edit/<%= module.mid %>" method="POST">
         <label>Module ID</label>
         <input type="text" name="mid" value="<%= module.mid %>" readonly/><br>
         <label>Name</label>
