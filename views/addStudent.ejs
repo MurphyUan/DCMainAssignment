@@ -1,3 +1,7 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/styles/form.css">
+</head>
 <body>
     <h1>Add Student</h1>
     <!-- If Errors exist display each error as list item -->
@@ -9,13 +13,39 @@
         </ul>
     <% } %>
     <!-- Form to Add New Student -->
+<section>
     <form action="/addStudent" method="post">
-        <label>Student ID</label>
-        <input type="text" name="sid" value="<%= sid %>"><br>
-        <label>Name</label>
-        <input type="text" name="name" value="<%= name %>"><br>
-        <label>GPA</label>
-        <input type="text" name="gpa" value="<%= gpa %>">
-        <input type="submit" value="Add"/>
+        <div class="row">
+            <div class = "col-1">
+                <label>Student ID</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="sid" value="<%= sid %>">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class = "col-1">
+                <label>Name</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="name" value="<%= name %>">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class = "col-1">
+                <label>GPA</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="gpa" value="<%= gpa %>">
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Add" class="buttons"/>
+            <input type="button" value="Home" onclick="location.href='http://localhost:3000/';" class="buttons"/>
+        </div>
     </form>
+</section>
 </body>
+</html>

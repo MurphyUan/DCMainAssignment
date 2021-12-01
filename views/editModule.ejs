@@ -1,3 +1,7 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/styles/form.css">
+</head>
 <body>
     <h1>Edit Module</h1>
     <!-- If Errors exist display each error as list item -->
@@ -9,14 +13,39 @@
         </ul>
     <% } %>
     <!-- Form to Edit Current Module -->
+<section>
     <form action="/module/edit/<%= module.mid %>" method="POST">
-        <label>Module ID</label>
-        <input type="text" name="mid" value="<%= module.mid %>" readonly/><br>
-        <label>Name</label>
-        <input type="text" name="name" value="<%= module.name %>"/><br>
-        <label>Credits</label>
-        <input type="text" name="credits" value="<%= module.credits %>"/><br>
-        <input type="submit" value="Update"/>
+        <div class="row">
+            <div class = "col-1">
+                <label>Module ID</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="mid" value="<%= module.mid %>" readonly/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class = "col-1">
+                <label>Name</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="name" value="<%= module.name %>"/>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class = "col-1">
+                <label>Credits</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="credits" value="<%= module.credits %>"/>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Update" class="buttons"/>
+            <input type="button" value="Home" onclick="location.href='http://localhost:3000/';" class="buttons"/>
+        </div>
     </form>
-    <a href="http://localhost:3000/">Home</a>
+</section>
 </body>
+</html>

@@ -162,17 +162,18 @@ app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lec
                         errors.errors.push({msg: "Dept doesn't exist"})
                         res.render("addLecturer", 
                             {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept})
+                    }else{
+                        mongoDAO.insertInto({_id: req.body._id, name: req.body.name, dept: req.body.dept})
+                        .then(() => {
+                            res.redirect('/listLecturers')
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            errors.errors.push({msg: "_id already exists"})
+                            res.render("addLecturer", 
+                                {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept})
+                        })
                     }
-                    mongoDAO.insertInto({_id: req.body._id, name: req.body.name, dept: req.body.dept})
-                    .then(() => {
-                        res.redirect('/listLecturers')
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        errors.errors.push({msg: "_id already exists"})
-                        res.render("addLecturer", 
-                            {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept})
-                    })
                 })
                 .catch((error) => {
                     console.log(error)

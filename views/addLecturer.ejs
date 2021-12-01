@@ -1,21 +1,51 @@
+<hmtl>
+<head>
+    <link rel="stylesheet" href="/styles/form.css">
+</head>
 <body>
-    <h1>Add Student</h1>
+    <h1>Add Lecturer</h1>
     <!-- If Errors exist display each error as list item -->
     <% if (errors != undefined) {%>
-        <ul>
+        <ul class="errors">
             <% errors.forEach((error) =>{ %>
                 <li><%= error.msg %></li>
             <% }) %>
         </ul>
     <% } %>
     <!-- Form to Add New Student -->
+<section>
     <form action="/addLecturer" method="post">
-        <label>Lecturer ID</label>
-        <input type="text" name="_id" value="<%= _id %>"><br>
-        <label>Name</label>
-        <input type="text" name="name" value="<%= name %>"><br>
-        <label>DEPT</label>
-        <input type="text" name="dept" value="<%= dept %>">
-        <input type="submit" value="Add"/>
+        <div class="row">
+            <div class = "col-1">
+                <label>Lecturer ID</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="_id" value="<%= _id %>"><br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class = "col-1">
+                <label>Name</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="name" value="<%= name %>"><br>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class = "col-1">
+                <label>Dept</label>
+            </div>
+            <div class = "col-2">
+                <input type="text" name="dept" value="<%= dept %>"><br>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Add" class="buttons"/>
+            <input type="button" value="Home" onclick="location.href='http://localhost:3000/';" class="buttons"/>
+        </div>
     </form>
+    </section>
 </body>
+</hmtl>
