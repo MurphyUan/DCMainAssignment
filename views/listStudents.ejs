@@ -3,26 +3,28 @@
 </head>
 
 <body>
-<h1>Students</h1>
-<form action="/addStudent" method="GET">
-    <input type="submit" value="Add"/>
-</form>
-<table>
-    <tr>
-        <td><b>Student ID</b></td>
-        <td><b>Name</b></td>
-        <td><b>GPA</b></td>
-        <td><b>Action</b></td>
-    </tr>
-    <!-- Display each Student -->
-    <% students.forEach((student)=>{ %>
-        <tr>
-            <td><%= student.sid %></td>
-            <td><%= student.name %></td>
-            <td><%= student.gpa %></td>
-            <td><a href="/students/delete/<%= student.sid %>">Delete</td>
-        </tr>
-    <% }) %>
-</table>
-<a href="http://localhost:3000/">Home</a>
+    <h1>Students</h1>
+    <section>
+        <table>
+            <tr>
+                <td><b>Student ID</b></td>
+                <td><b>Name</b></td>
+                <td><b>GPA</b></td>
+                <td><b>Action</b></td>
+            </tr>
+            <!-- Display each Student -->
+            <% students.forEach((student)=>{ %>
+                <tr>
+                    <td><%= student.sid %></td>
+                    <td><%= student.name %></td>
+                    <td><%= student.gpa %></td>
+                    <td><a href="/students/delete/<%= student.sid %>">Delete</td>
+                </tr>
+            <% }) %>
+        </table>
+        <form action="/addStudent" method="GET">
+            <input type="submit" value="Add" class="button"/>
+            <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
+        </form>
+    </section>
 </body>

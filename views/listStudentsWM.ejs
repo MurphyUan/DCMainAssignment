@@ -2,19 +2,23 @@
     <link rel="stylesheet" href="/styles/tables.css">
 </head>
 <h1>Students studying <%= module %></h1>
-<table>
-    <tr>
-        <td><b>Student ID</b></td>
-        <td><b>Name</b></td>
-        <td><b>GPA</b></td>
-    </tr>
-    <!-- Display each Student studying  -->
-    <% students.forEach((student)=>{ %>
+<body>
+<section>
+    <table>
         <tr>
-            <td><%= student.sid %></td>
-            <td><%= student.name %></td>
-            <td><%= student.gpa %></td>
+            <td><b>Student ID</b></td>
+            <td><b>Name</b></td>
+            <td><b>GPA</b></td>
         </tr>
-    <% }) %>
-</table>
-<a href="http://localhost:3000/">Home</a>
+        <!-- Display each Student studying  -->
+        <% students.forEach((student)=>{ %>
+            <tr>
+                <td><%= student.sid %></td>
+                <td><%= student.name %></td>
+                <td><%= student.gpa %></td>
+            </tr>
+        <% }) %>
+    </table>
+    <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
+</section>
+</body>

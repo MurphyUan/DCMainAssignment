@@ -4,24 +4,26 @@
 </head>
 <body>
     <h1>Lecturers</h1>
-    <form action="/addLecturer" method="GET">
-        <input type="submit" value="Add"/>
-    </form>
-    <table>
-        <tr>
-        <td><b>Lecturer ID</b></td>
-        <td><b>Name</b></td>
-        <td><b>Dept</b></td>
-        <!-- Display each Lecturer -->
-        <% lecturers.forEach((lecturer)=>{ %>
+    <section>
+        <table>
             <tr>
-                <td><%= lecturer._id %></td>
-                <td><%= lecturer.name %></td>
-                <td><%= lecturer.dept %></td>
+            <td><b>Lecturer ID</b></td>
+            <td><b>Name</b></td>
+            <td><b>Dept</b></td>
+            <!-- Display each Lecturer -->
+            <% lecturers.forEach((lecturer)=>{ %>
+                <tr>
+                    <td><%= lecturer._id %></td>
+                    <td><%= lecturer.name %></td>
+                    <td><%= lecturer.dept %></td>
+                </tr>
+            <% }) %>
             </tr>
-        <% }) %>
-        </tr>
-    </table>
-    <a href="http://localhost:3000/">Home</a>
+        </table>
+        <form action="/addLecturer" method="GET">
+            <input type="submit" value="Add" class="button"/>
+            <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
+        </form>
+    </section>
 </body>
 </html>

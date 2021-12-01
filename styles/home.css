@@ -1,0 +1,40 @@
+html{
+    background: deepskyblue;
+    box-sizing: border-box;
+}
+body{ 
+    color: deepskyblue;
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate( -50%, -50%);
+}
+section{
+    background-color: aliceblue;
+    color:deepskyblue;
+    border-radius: 1em;
+    padding: 20px;
+}
+input{
+    border: 4px outset deepskyblue;
+    background:deepskyblue;
+    border-radius: 4px;
+    color:aliceblue;
+    resize: vertical;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: large;
+    text-shadow: 1px 1px teal;
+    padding: 1em;
+    width: 100%;
+}
+input:nth-child(n+2){
+    margin-top: 12px;
+}
+h1{
+    background: aliceblue;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    color:deepskyblue;
+    text-align: center;
+    text-shadow: 1px 1px teal;
+}

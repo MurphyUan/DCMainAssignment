@@ -4,7 +4,6 @@ const url = 'mongodb://localhost:27017'
 const dbName = 'lecturersDB'
 const colName = 'lecturers'
 
-var lecturersDB
 var lecturers
 
 MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})

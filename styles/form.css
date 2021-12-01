@@ -13,7 +13,9 @@ h1{
     background: aliceblue;
     border-radius: 0.5em;
     padding: 0.5em;
+    color:deepskyblue;
     text-align: center;
+    text-shadow: 1px 1px teal;
 }
 section{
     background-color: aliceblue;
@@ -26,7 +28,7 @@ label{
     padding: 12px 12px 12px 0;
 }
 input{
-    border: 1px outset deepskyblue;
+    border: 4px inset deepskyblue;
     background:deepskyblue;
     border-radius: 4px;
     color:aliceblue;
@@ -36,6 +38,8 @@ input{
 }
 .buttons{
     margin-top: 12px;
+    text-shadow: 1px 1px teal;
+    border: 4px outset deepskyblue;
 }
 .col-1{
     position: relative;
@@ -43,7 +47,7 @@ input{
     float: left;
     width:33%;
 }
-.col-2{
+.col-2:nth-child(n+2){
     margin-top: 6px;
     float: left;
     width:67%;
