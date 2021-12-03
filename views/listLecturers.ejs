@@ -1,27 +1,64 @@
 <html>
 <head>
+    <!-- Import Styling -->
     <link href="/styles/tables.css" rel="stylesheet" type="text/css">
 </head>
+<script>
+    // submit function
+    function submitform(formname){
+        document[formname].submit()
+    }
+</script>
 <body>
+    <!-- Header -->
     <h1>Lecturers</h1>
     <section>
+        <!-- Table -->
         <table>
+            <!-- Table Row -->
             <tr>
-            <td><b>Lecturer ID</b></td>
-            <td><b>Name</b></td>
-            <td><b>Dept</b></td>
+                <!-- Table Headers -->
+                <th onclick="submitform('get1')"><!-- Calls function in script in header file -->
+                    <b>Lecturer ID</b>
+                    <!-- New Form To Request Sort -->
+                    <form action="/listLecturers" name="get1" method="post">
+                        <!-- Hidden Input Button -->
+                        <input type="hidden" name="orderby" value="sid ASC"/>
+                    </form>
+                </th>
+                <th onclick="submitform('get2')"><!-- Calls function in script in header file -->
+                    <b>Name</b>
+                    <!-- New Form To Request Sort -->
+                    <form action="/listLecturers" name="get2" method="post">
+                        <!-- Hidden Input Button -->
+                        <input type="hidden" name="orderby" value="name ASC"/>
+                    </form>
+                </th>
+                <th onclick="submitform('get3')"><!-- Calls function in script in header file -->
+                    <b>Dept</b>
+                    <!-- New Form To Request Sort -->
+                    <form action="/listLecturers" name="get3" method="post">
+                        <!-- Hidden Input Button -->
+                        <input type="hidden" name="orderby" value="gpa DESC"/>
+                    </form>
+                </th>
+            </tr>
             <!-- Display each Lecturer -->
             <% lecturers.forEach((lecturer)=>{ %>
+                <!-- New Table Row -->
                 <tr>
+                    <!-- Table Data -->
                     <td><%= lecturer._id %></td>
                     <td><%= lecturer.name %></td>
                     <td><%= lecturer.dept %></td>
                 </tr>
             <% }) %>
-            </tr>
         </table>
+        <!-- Button Form -->
         <form action="/addLecturer" method="GET">
+            <!-- Submit Button -->
             <input type="submit" value="Add" class="button"/>
+            <!-- Home Button, redirects to Home Page -->
             <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
         </form>
     </section>

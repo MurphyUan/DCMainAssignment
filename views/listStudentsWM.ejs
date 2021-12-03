@@ -1,24 +1,58 @@
 <head>
+    <!-- Import Styling -->
     <link rel="stylesheet" href="/styles/tables.css">
 </head>
+<script>
+    // submit function
+    function submitform(formname){
+        document[formname].submit()
+    }
+</script>
+<!-- Header -->
 <h1>Students studying <%= module %></h1>
 <body>
 <section>
+    <!-- Table -->
     <table>
+        <!-- Table Row -->
         <tr>
-            <td><b>Student ID</b></td>
-            <td><b>Name</b></td>
-            <td><b>GPA</b></td>
+            <th onclick="submitform('get1')"><!-- Calls function in script in header file -->
+                <b>Student ID</b>
+                <!-- New Form To Request Sort -->
+                <form action="/module/students/<%= module %>" name="get1" method="post">
+                    <!-- Hidden Input Button -->
+                    <input type="hidden" name="orderby" value="s.sid ASC"/>
+                </form>
+            </th>
+            <th onclick="submitform('get2')"><!-- Calls function in script in header file -->
+                <b>Name</b>
+                <!-- New Form To Request Sort -->
+                <form action="/module/students/<%= module %>" name="get2" method="post">
+                    <!-- Hidden Input Button -->
+                    <input type="hidden" name="orderby" value="s.name ASC"/>
+                </form>
+            </th>
+            <th onclick="submitform('get3')"><!-- Calls function in script in header file -->
+                <b>GPA</b>
+                <!-- New Form To Request Sort -->
+                <form action="/module/students/<%= module %>" name="get3" method="post">
+                    <!-- Hidden Input Button -->
+                    <input type="hidden" name="orderby" value="s.gpa DESC"/>
+                </form>
+            </th>
         </tr>
         <!-- Display each Student studying  -->
         <% students.forEach((student)=>{ %>
+            <!-- New Table Row -->
             <tr>
+                <!-- New Table Data -->
                 <td><%= student.sid %></td>
                 <td><%= student.name %></td>
                 <td><%= student.gpa %></td>
             </tr>
         <% }) %>
     </table>
+    <!-- Home Button -->
     <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
 </section>
 </body>

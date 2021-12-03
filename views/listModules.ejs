@@ -1,31 +1,67 @@
 <html>
 <head>
+    <!-- Import Styling -->
     <link href="/styles/tables.css" rel="stylesheet" type="text/css">
 </head>
+<script>
+    // submit function
+    function submitform(formname){
+        document[formname].submit()
+    }
+</script>
 
 <body>
+    <!-- Header Tag -->
     <h1>Modules</h1>
-    <br><br>
     <section>
+    <!-- Table -->
     <table>
+        <!-- Table Row -->
         <tr>
-            <th><b>Module ID</b></th>
-            <th><b>Name</b></th>
-            <th><b>Credits</b></th>
+            <!-- Table Headers -->
+            <th onclick="submitform('get1')"><!-- Calls function in script in header file -->
+                <b>Module ID</b>
+                <!-- New Form To Request Sort -->
+                <form action="/listModules" name="get1" method="post">
+                    <!-- Hidden Input Button -->
+                    <input type="hidden" name="orderby" value="mid ASC"/>
+                </form>
+            </th>
+            <th onclick="submitform('get2')"><!-- Calls function in script in header file -->
+                <b>Name</b>
+                <!-- New Form To Request Sort -->
+                <form action="/listModules" name="get2" method="post">
+                    <!-- Hidden Input Button -->
+                    <input type="hidden" name="orderby" value="name ASC"/>
+                </form>
+            </th>
+            <th onclick="submitform('get3')"><!-- Calls function in script in header file -->
+                <b>Credits</b>
+                <!-- New Form To Request Sort -->
+                <form action="/listModules" name="get3" method="post">
+                    <!-- Hidden Input Button -->
+                    <input type="hidden" name="orderby" value="credits DESC"/>
+                </form>
+            </th>
             <th><b>Update</b></th>
             <th><b>Students</b></th>
         </tr>
         <!-- Display Each Module From Module List -->
         <% modules.forEach((m) => { %>
+            <!-- New Table Row -->
             <tr>
+                <!-- New Table data -->
                 <td><%= m.mid %></td>
                 <td><%= m.name %></td>
                 <td><%= m.credits %></td>
+                <!-- Update Link -->
                 <td><a href="/module/edit/<%= m.mid%>">Update</td>
+                <!-- List Link -->
                 <td><a href="/module/students/<%= m.mid%>">List</td>
             </tr>
         <% }) %>
     </table>
+    <!-- Home Button, Redirects to Home Page -->
     <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
     </section>
 </body>

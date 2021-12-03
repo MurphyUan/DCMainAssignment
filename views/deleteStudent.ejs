@@ -1,3 +1,15 @@
-<h1>Error Message</h1><br><br>
-<h2><%= sid %> has assocatied modules they cannot be deleted</h2>
-<a href="http://localhost:3000/">Home</a>
+<head>
+    <!-- Import Styling -->
+    <link rel="stylesheet" href="/styles/home.css">
+</head>
+<!-- Header -->
+
+<body>
+    <h1>Error Message</h1><br><br>
+    <section>
+        <!-- Inner Header, displays Error -->
+        <h2><%= sid %> has assocatied modules they cannot be deleted</h2>
+        <!-- Home Button, Redirects to Home Page -->
+        <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
+    </section>
+</body>

@@ -1,16 +1,47 @@
 <head>
-<link rel="stylesheet" href="/styles/tables.css">
+    <!-- Import Styling -->
+    <link rel="stylesheet" href="/styles/tables.css">
 </head>
-
+<script>
+    // submit function
+    function submitform(formname){
+        document[formname].submit()
+    }
+</script>
 <body>
+    <!-- Header -->
     <h1>Students</h1>
     <section>
+        <!-- Table -->
         <table>
+            <!-- Table Row -->
             <tr>
-                <td><b>Student ID</b></td>
-                <td><b>Name</b></td>
-                <td><b>GPA</b></td>
-                <td><b>Action</b></td>
+                <!-- Table Headers -->
+                <th onclick="submitform('get1')"><!-- Calls function in script in header file -->
+                    <b>Student ID</b>
+                    <!-- New Form To Request Sort -->
+                    <form action="/listStudents" name="get1" method="post">
+                        <!-- Hidden Input Button -->
+                        <input type="hidden" name="orderby" value="sid ASC"/>
+                    </form>
+                </th>
+                <th onclick="submitform('get2')"><!-- Calls function in script in header file -->
+                    <b>Name</b>
+                    <!-- New Form To Request Sort -->
+                    <form action="/listStudents" name="get2" method="post">
+                        <!-- Hidden Input Button -->
+                        <input type="hidden" name="orderby" value="name ASC"/>
+                    </form>
+                </th>
+                <th onclick="submitform('get3')"><!-- Calls function in script in header file -->
+                    <b>GPA</b>
+                    <!-- New Form To Request Sort -->
+                    <form action="/listStudents" name="get3" method="post">
+                        <!-- Hidden Input Button -->
+                        <input type="hidden" name="orderby" value="gpa DESC"/>
+                    </form>
+                </th>
+                <th><b>Action</b></th>
             </tr>
             <!-- Display each Student -->
             <% students.forEach((student)=>{ %>
@@ -22,8 +53,11 @@
                 </tr>
             <% }) %>
         </table>
+        <!-- Button Form -->
         <form action="/addStudent" method="GET">
+            <!-- Submit Button -->
             <input type="submit" value="Add" class="button"/>
+            <!-- Home Button, Redirects to Home Page -->
             <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
         </form>
     </section>

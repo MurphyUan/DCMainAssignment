@@ -1,8 +1,10 @@
 <html>
 <head>
+    <!-- Import Styling -->
     <link rel="stylesheet" href="/styles/form.css">
 </head>
 <body>
+    <!-- Header -->
     <h1>Add Student</h1>
     <!-- If Errors exist display each error as list item -->
     <% if (errors != undefined) {%>
@@ -14,35 +16,47 @@
     <% } %>
     <!-- Form to Add New Student -->
 <section>
+    <!-- Form -->
     <form action="/addStudent" method="post">
+        <!-- Student ID -->
         <div class="row">
             <div class = "col-1">
+                <!-- Label -->
                 <label>Student ID</label>
             </div>
             <div class = "col-2">
+                <!-- Text Input -->
                 <input type="text" name="sid" value="<%= sid %>">
             </div>
         </div>
 
+        <!-- Student Name -->
         <div class="row">
             <div class = "col-1">
+                <!-- Label -->
                 <label>Name</label>
             </div>
             <div class = "col-2">
+                <!-- Text Input -->
                 <input type="text" name="name" value="<%= name %>">
             </div>
         </div>
         
+        <!-- Student GPA -->
         <div class="row">
             <div class = "col-1">
+                <!-- Label -->
                 <label>GPA</label>
             </div>
             <div class = "col-2">
+                <!-- Text Input -->
                 <input type="text" name="gpa" value="<%= gpa %>">
             </div>
         </div>
         <div class="row">
+            <!-- Submit Button -->
             <input type="submit" value="Add" class="buttons"/>
+            <!-- Home Button, Redirects to Home Page -->
             <input type="button" value="Home" onclick="location.href='http://localhost:3000/';" class="buttons"/>
         </div>
     </form>

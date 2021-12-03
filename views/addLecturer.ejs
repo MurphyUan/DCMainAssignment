@@ -1,8 +1,10 @@
 <hmtl>
 <head>
+    <!-- Import Styling -->
     <link rel="stylesheet" href="/styles/form.css">
 </head>
 <body>
+    <!-- Header -->
     <h1>Add Lecturer</h1>
     <!-- If Errors exist display each error as list item -->
     <% if (errors != undefined) {%>
@@ -14,36 +16,60 @@
     <% } %>
     <!-- Form to Add New Student -->
 <section>
+    <!-- Form -->
     <form action="/addLecturer" method="post">
+        <!-- Lecturer ID -->
         <div class="row">
             <div class = "col-1">
+                <!-- Label -->
                 <label>Lecturer ID</label>
             </div>
             <div class = "col-2">
+                <!-- Text Input -->
                 <input type="text" name="_id" value="<%= _id %>"><br>
             </div>
         </div>
 
+        <!-- Lecturer Name -->
         <div class="row">
             <div class = "col-1">
+                <!-- Label -->
                 <label>Name</label>
             </div>
             <div class = "col-2">
+                <!-- Text Input -->
                 <input type="text" name="name" value="<%= name %>"><br>
             </div>
         </div>
         
+        <!-- Lecturer Department -->
         <div class="row">
             <div class = "col-1">
+                <!-- Label -->
                 <label>Dept</label>
             </div>
             <div class = "col-2">
-                <input type="text" name="dept" value="<%= dept %>"><br>
+                <!-- Text Input -->
+                <input type="text" list="departments" name="dept" value="<%= dept %>"><br>
+                <!-- Data List -->
+                <datalist id="departments">
+                    <!-- Check if departments -->
+                    <% if (departments != undefined){ %>
+                        <!-- Loop through departments in the list -->
+                        <% departments.forEach((department)=>{ %>
+                            <!-- New Option -->
+                            <option value="<%= department %>"></option>
+                        <% }) %>
+                    <% } %>
+                </datalist>
             </div>
         </div>
         <div class="row">
+            <!-- Submit Button -->
             <input type="submit" value="Add" class="buttons"/>
+            <!-- Home Button, Redirects to Home Page -->
             <input type="button" value="Home" onclick="location.href='http://localhost:3000/';" class="buttons"/>
+            
         </div>
     </form>
     </section>
