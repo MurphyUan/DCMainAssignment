@@ -155,6 +155,7 @@ app.get('/module/students/:mid', (req, res) => {
             res.send(error)
         })
 })
+
 // Post request to sort of students studying module
 app.post('/module/students/:mid', [check('orderby').exists({checkFalsy:true})], (req,res) => {
     // Check Errors with Request Body
@@ -206,6 +207,7 @@ app.get('/listStudents', (req, res) => {
             res.send(error)
         })
 })
+
 // Post Method for Sorting
 app.post('/listStudents', (req, res) => {
     // Log action
@@ -223,6 +225,7 @@ app.post('/listStudents', (req, res) => {
             res.send(error)
         })
 })
+
 //Delete Student Page
 app.get('/students/delete/:sid', (req, res) => {
     // Perform Delete Query through MySQL
@@ -238,11 +241,13 @@ app.get('/students/delete/:sid', (req, res) => {
             res.render("deleteStudent", { sid: req.params.sid })
         })
 })
+
 //Add Student Page
 app.get('/addStudent', (req, res) => {
     // Render EJS File with errors and student information
     res.render("addStudent", { errors: undefined, sid: "", name: "", gpa: "" })
 })
+
 // Post method for insert
 app.post('/addStudent', [
     check("sid").isLength({ min: 4, max: 4 }).withMessage("Student ID must be 4"),
@@ -280,6 +285,7 @@ app.post('/addStudent', [
     })
 
 //-----------------------Lecturers-------------------------
+
 //List Lecturers Page
 app.get('/listLecturers', (req, res) => {
     // Perform Find Query through MongoDB
@@ -295,6 +301,8 @@ app.get('/listLecturers', (req, res) => {
             console.log(error)
         })
 })
+
+// List lecturers with sort
 app.post('/listLecturers', (req, res) => {
     // Perform Find Query through MongoDB
     mongoDAO.find({}, req.body.orderby)
@@ -308,6 +316,7 @@ app.post('/listLecturers', (req, res) => {
             console.log(error)
         })
 })
+
 //Add Lecturer Page
 app.get('/addLecturer',(req, res) => {
     // Perform Select Query to get Departments through MySQL
@@ -324,61 +333,68 @@ app.get('/addLecturer',(req, res) => {
                 res.redirect('/listLecturers')
             })
 })
+
 // Add New Lecturer Method with Validation
 app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lecturer ID must be 4 characters"),
     check("name").isLength({min:5}).withMessage("Name must be atleast 5 characters"),
     check("dept").isLength({min:3, max:3}).withMessage("Dept must be 3 characters long")], (req, res) => {
         // Check Errors in Request
         const errors = validationResult(req)
-        var attemptInsert = false
-        var results
+        let departments
         // Perform Select Query through MySQL
-        mySQLDAO.getQuery('select did from dept')
-            // Distinct Find succeeds
-            .then((result) => {
-                // Check if Department exists
-                if(result.includes({did: req.body.dept}))
-                    // Allow insert attempt
-                    attemptInsert = true
-                // Department doesn't exist
-                else
-                    // Add Error to Errors Array
-                    errors.errors.push({msg: "Dept doesn't exist"})
-                // Append results to local variable
-                results = result
-            })
-            // Distinct Find fails
-            .catch((error) => {
-                // Log Error
-                console.log(error)
-                // Add Error to Errors Array
-                errors.errors.push(error)
-            })
-        // Department Exists
-        if(attemptInsert){
-            // Perform Insert Query through MongoDB
-            mongoDAO.insertInto({_id: req.body._id, name: req.body.name, dept: req.body.dept})
-                // Insert succeeds
-                .then(() => {
-                    // Redirect to page
-                    res.redirect('/listLecturers')
+        if (errors.isEmpty()) {
+            mySQLDAO.getQuery('select did from dept')
+                // Distinct Find succeeds
+                .then((result) => {
+                    // Get Results
+                    departments = result
+                    // Find the first element in the array that matches the department id
+                    let results = result.find((element) => {
+                        // Check if element id is equal to department id
+                        return element.did === req.body.dept
+                    })
+                    // Check if Department exists
+                    if(results.did === req.body.dept){
+                        // Allow insert attempt
+                        mongoDAO.insertInto({_id: req.body._id, name: req.body.name, dept: req.body.dept})
+                            // Insert succeeds
+                            .then(() => {
+                                // Redirect to page
+                                res.redirect('/listLecturers')
+                            })
+                            // Insert fails
+                            .catch((error) => {
+                                // Log error
+                                console.log(error)
+                                // Add Error to Errors Array
+                                errors.errors.push({msg: "_id already exists"})
+                                // Render EJS File with Errors and Lecturer Information
+                                res.render("addLecturer", 
+                                    {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept, departments: departments})
+                            })
+                    }    
+                    // Department doesn't exist
+                    else {
+                        // Add Error to Errors Array
+                        errors.errors.push({msg: "Dept doesn't exist"})
+                        // Render EJS File with Errors and Lecturer Information
+                        res.render("addLecturer", 
+                                {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept, departments: departments})
+                    }
                 })
-                // Insert fails
+                // Distinct Find fails
                 .catch((error) => {
-                    // Log error
+                    // Log Error
                     console.log(error)
                     // Add Error to Errors Array
-                    errors.errors.push({msg: "_id already exists"})
-                    // Render EJS File with Errors and Lecturer Information
-                    res.render("addLecturer", 
-                        {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept, departments: results})
+                    errors.errors.push(error)
                 })
-        } 
-        // Errors is not empty
-        else {
+        }
+        // Errors is not Empty
+        else{
             // Render EJS File with Errors and Lecturer Information
-            res.render("addLecturer",
-                { errors: errors.errors, _id: req.body._id, name: req.body.name, dept: req.body.dept, departments: results })
+            res.render("addLecturer", 
+                                {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept, departments: departments})
         }
 
 })
