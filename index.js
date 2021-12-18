@@ -335,9 +335,11 @@ app.get('/addLecturer',(req, res) => {
 })
 
 // Add New Lecturer Method with Validation
-app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lecturer ID must be 4 characters"),
+app.post('/addLecturer', [
+    check("_id").isLength({min:4, max:4}).withMessage("Lecturer ID must be 4 characters"),
     check("name").isLength({min:5}).withMessage("Name must be atleast 5 characters"),
-    check("dept").isLength({min:3, max:3}).withMessage("Dept must be 3 characters long")], (req, res) => {
+    check("dept").isLength({min:3, max:3}).withMessage("Dept must be 3 characters long")
+    ], (req, res) => {
         // Check Errors in Request
         const errors = validationResult(req)
         let departments
@@ -354,11 +356,11 @@ app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lec
                         return element.did === req.body.dept
                     })
                     // Check if Department exists
-                    if(results.did === req.body.dept){
+                    if(results != undefined && results.did === req.body.dept){
                         // Allow insert attempt
                         mongoDAO.insertInto({_id: req.body._id, name: req.body.name, dept: req.body.dept})
                             // Insert succeeds
-                            .then(() => {
+                            .then((result) => {
                                 // Redirect to page
                                 res.redirect('/listLecturers')
                             })
@@ -382,12 +384,15 @@ app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lec
                                 {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept, departments: departments})
                     }
                 })
-                // Distinct Find fails
+                // Find fails ( should never happen )
                 .catch((error) => {
                     // Log Error
                     console.log(error)
                     // Add Error to Errors Array
                     errors.errors.push(error)
+                    // Redirect to page
+                    res.render("addLecturer", 
+                                {errors: errors.errors, _id: req.body._id, name: req.body.name, dept:req.body.dept, departments: departments})
                 })
         }
         // Errors is not Empty
