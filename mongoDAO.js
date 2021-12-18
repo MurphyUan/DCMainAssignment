@@ -22,19 +22,19 @@ MongoClient.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
         //Log Error
         console.log(error)
     })
+
 //Generic Find Query with Sort that accepts two arguments
 var find = (document, sort) =>{
+    // Object to pass into sort
+    var sortObject = {}
+    //Assign custom name and value
+    sortObject[sort.substring(1)] = Math.sign(parseInt(sort.charAt(0)+"1"))
     // Returns Promise of type resolve or reject
     return new Promise((resolve, reject) => {
         // MongoDB Find Query
         var cursor = lecturers.find(document)
             //Sort the Query
-            .sort(
-                //Remove First Character of Sort String
-                [[sort.substring(1),
-                //Get First Character of Sort String and Check Sign + / -
-                Math.sign(parseInt(sort.charAt(0)+"1"))]]
-                )
+            .sort(sortObject)
         //convert result to array
         cursor.toArray()
             //Conversion succeeds
@@ -49,6 +49,7 @@ var find = (document, sort) =>{
             })
     })
 }
+
 //Generic Insert Query that accepts one argument
 var insertInto = (document) => {
     // Returns Promise of type resolve or reject
@@ -87,5 +88,23 @@ var distinct = (document) =>{
     })
 }
 
+// Generic Remove / Delete Query that accepts one argument
+var removeAll = (document) => {
+    // Returns Promise of type resolve or reject
+    return new Promise((resolve, reject) => {
+        lecturers.deleteMany(document)
+            // Delete succeeds
+            .then((documents) => {
+                // throw documents forward
+                resolve(documents)
+            })
+            // Delete fails
+            .catch((error) => {
+                // throw error forward
+                reject(error)
+            })
+    })
+}
+
 //export functions to application
-module.exports = { find , insertInto , distinct }
+module.exports = { find , insertInto , distinct , removeAll }

@@ -143,7 +143,7 @@ app.post('/module/edit/:mid', [
 //List Students Studying Module Page
 app.get('/module/students/:mid', (req, res) => {
     // Perfrom Select Query through MySQL
-    mySQLDAO.getQuery(`select s.sid, s.name, s.gpa from student s inner join student_module sm on s.sid = sm.sid WHERE sm.mid = "${req.params.mid}"`)
+    mySQLDAO.getQuery(`select s.sid, s.name, s.gpa from student s inner join student_module sm on s.sid = sm.sid WHERE sm.mid = "${req.params.mid}" ORDER BY s.sid ASC`)
         // Select succeeds
         .then((result) => {
             // Render EJS File
@@ -206,6 +206,7 @@ app.get('/listStudents', (req, res) => {
             res.send(error)
         })
 })
+// Post Method for Sorting
 app.post('/listStudents', (req, res) => {
     // Log action
     console.log("Listing Students with sort " + req.body.orderby)
@@ -242,6 +243,7 @@ app.get('/addStudent', (req, res) => {
     // Render EJS File with errors and student information
     res.render("addStudent", { errors: undefined, sid: "", name: "", gpa: "" })
 })
+// Post method for insert
 app.post('/addStudent', [
     check("sid").isLength({ min: 4, max: 4 }).withMessage("Student ID must be 4"),
     check("name").isLength({ min: 5 }).withMessage("Name must be atleast 5 characters"),
@@ -280,30 +282,49 @@ app.post('/addStudent', [
 //-----------------------Lecturers-------------------------
 //List Lecturers Page
 app.get('/listLecturers', (req, res) => {
+    // Perform Find Query through MongoDB
     mongoDAO.find({}, '+_id')
+        // Find succeeds
         .then((result)=>{
+            // Render EJS File with Lecturer Information
             res.render("listLecturers", { lecturers: result })
         })
+        // Find fails
         .catch((error)=>{
+            // Log Error
+            console.log(error)
+        })
+})
+app.post('/listLecturers', (req, res) => {
+    // Perform Find Query through MongoDB
+    mongoDAO.find({}, req.body.orderby)
+        // Find succeeds
+        .then((result) => {
+            // Render EJS File with Lecturer Information
+            res.render("listLecturers", {lecturers: result})
+        })
+        .catch((error) => {
+            // Log error
             console.log(error)
         })
 })
 //Add Lecturer Page
 app.get('/addLecturer',(req, res) => {
-    // Render EJS File with Errors and Lecturer information
-    mongoDAO.distinct('dept')
-        .then((result) => {
-            console.log(result)
-            res.render("addLecturer", { errors: undefined, _id: "", name: "", dept: "", departments: result })
-        })
-        .catch((error) => {
-            // Log Error
-            console.log(error)
-            // Redirect to Page
-            res.redirect('/listLecturers')
-        })
-    
+    // Perform Select Query to get Departments through MySQL
+    mySQLDAO.getQuery('select did from dept')
+            .then((result) => {
+                console.log(result)
+                // Render EJS File with Errors and Lecturer information
+                res.render("addLecturer", { errors: undefined, _id: "", name: "", dept: "", departments: result })
+            })
+            .catch((error) => {
+                // Log Error
+                console.log(error)
+                // Redirect to Page
+                res.redirect('/listLecturers')
+            })
 })
+// Add New Lecturer Method with Validation
 app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lecturer ID must be 4 characters"),
     check("name").isLength({min:5}).withMessage("Name must be atleast 5 characters"),
     check("dept").isLength({min:3, max:3}).withMessage("Dept must be 3 characters long")], (req, res) => {
@@ -311,21 +332,20 @@ app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lec
         const errors = validationResult(req)
         var attemptInsert = false
         var results
-        // Perform Find Query through MongoDB
-        mongoDAO.distinct('dept')
+        // Perform Select Query through MySQL
+        mySQLDAO.getQuery('select did from dept')
             // Distinct Find succeeds
             .then((result) => {
                 // Check if Department exists
-                if(result.includes(req.body.dept)){
+                if(result.includes({did: req.body.dept}))
+                    // Allow insert attempt
                     attemptInsert = true
-                    results = result
-                }
                 // Department doesn't exist
-                else{
-                    results = undefined
+                else
                     // Add Error to Errors Array
                     errors.errors.push({msg: "Dept doesn't exist"})
-                }
+                // Append results to local variable
+                results = result
             })
             // Distinct Find fails
             .catch((error) => {
@@ -362,3 +382,112 @@ app.post('/addLecturer', [check("_id").isLength({min:4, max:4}).withMessage("Lec
         }
 
 })
+
+//-----------------------Departments-------------------------
+
+//List Departments Page
+app.get('/listDepartments', (req, res) => {
+    // Log action
+    console.log("Listing Departments")
+    // Perform Select Query
+    mySQLDAO.getQuery(`select * from dept `)
+        // Select succeeds
+        .then((result) => {
+            // Render EJS file with Departments
+            res.render("listDepartments", { departments: result })
+        })
+        // Select fails
+        .catch((error) => {
+            // Display error
+            res.send(error)
+        })
+})
+
+// Post Method for Sorting
+app.post('/listDepartments', (req, res) => {
+    // Log action
+    console.log("Listing Departments with sort " + req.body.orderby)
+    // Perform Select Query with sort through MySQL
+    mySQLDAO.getQuery(`select * from dept ORDER BY ${req.body.orderby}`)
+        // Select succeeds
+        .then((result) => {
+            // Render EJS File with Departments
+            res.render("listDepartments", { departments: result })
+        })
+        // Select fails
+        .catch((error) => {
+            // Display Error
+            res.send(error)
+        })
+})
+
+//Delete Department Page
+app.get('/departments/delete/:did', (req, res) => {
+    // Perform Delete Query through MySQL
+    mySQLDAO.getQuery(`DELETE FROM dept WHERE did = '${req.params.did}'`)
+        // Delete succeeds
+        .then(() => {
+            // Continue And RemoveAll Lecturers related to department
+            mongoDAO.removeAll({dept: req.params.did})
+                // Delete Succeeds
+                .then(() =>  {
+                    // Redirect page
+                    res.redirect('/listDepartments')
+                })
+                // Delete Fails
+                .catch((error) => {
+                    // Log Error
+                    console.log(error)
+                    // Redirect page
+                    res.redirect('/listDepartments')
+                })
+        })
+        // Delete fails
+        .catch((error) => {
+            // Log Error
+            console.log(error)
+            // Redirect page
+            res.redirect('/listDepartments')
+        })
+})
+
+//Add Department Page
+app.get('/addDepartment', (req, res) => {
+    // Render EJS File with errors and department information
+    res.render("addDepartment", { errors: undefined, did: "", name: "" })
+})
+
+// Post method for insert
+app.post('/addDepartment', [
+    check("did").isLength({ min: 3, max: 3 }).withMessage("Department ID must be 3 characters long"),
+    check("name").isLength({ min: 5 }).withMessage("Name must be atleast 5 characters")], (req, res) => {
+        // Log Request Body
+        console.log(req.body)
+        // Check errors in Request
+        const errors = validationResult(req);
+        // Check if Errors is empty
+        if (errors.isEmpty()) {
+            // Perform Insert Query through MySQL
+            mySQLDAO.getQuery(`insert into dept (did, name) values ("${req.body.did}","${req.body.name}")`)
+                // Insert succeeds
+                .then(() => {
+                    // Redirect to page
+                    res.redirect('/listDepartments')
+                })
+                // Insert fails
+                .catch((error) => {
+                    // Add Error to Errors Array
+                    errors.errors.push({ msg: `Error: ${error.code}: ${error.sqlMessage}` })
+                    // Render EJS File with Errors and Student Information
+                    res.render("addDepartment",
+                        { errors: errors.errors, did: req.body.did, name: req.body.name })
+                })
+
+        }
+        // Errors is not Empty 
+        else {
+            // Render EJS File with errors and Student Information
+            res.render("addDepartment",
+                { errors: errors.errors, did: req.body.did, name: req.body.name })
+        }
+    })

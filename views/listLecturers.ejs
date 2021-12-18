@@ -23,7 +23,7 @@
                     <!-- New Form To Request Sort -->
                     <form action="/listLecturers" name="get1" method="post">
                         <!-- Hidden Input Button -->
-                        <input type="hidden" name="orderby" value="sid ASC"/>
+                        <input type="hidden" name="orderby" value="+_id"/>
                     </form>
                 </th>
                 <th onclick="submitform('get2')"><!-- Calls function in script in header file -->
@@ -31,7 +31,7 @@
                     <!-- New Form To Request Sort -->
                     <form action="/listLecturers" name="get2" method="post">
                         <!-- Hidden Input Button -->
-                        <input type="hidden" name="orderby" value="name ASC"/>
+                        <input type="hidden" name="orderby" value="+name"/>
                     </form>
                 </th>
                 <th onclick="submitform('get3')"><!-- Calls function in script in header file -->
@@ -39,7 +39,7 @@
                     <!-- New Form To Request Sort -->
                     <form action="/listLecturers" name="get3" method="post">
                         <!-- Hidden Input Button -->
-                        <input type="hidden" name="orderby" value="gpa DESC"/>
+                        <input type="hidden" name="orderby" value="+dept"/>
                     </form>
                 </th>
             </tr>

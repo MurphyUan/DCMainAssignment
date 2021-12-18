@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <!-- Import Styling -->
+        <link href="/styles/tables.css" rel="stylesheet" type="text/css">
+        <!-- Script -->
+        <script>
+            // Submit function
+            function submitform(formname){
+                document[formname].submit()
+            }
+        </script>
+    </head>
+    <body>
+        <!-- Header -->
+        <h1>Departments</h1>
+        <section>
+            <!-- Table -->
+            <table>
+                <!-- New Table Row -->
+                <tr>
+                    <!-- Table Headers w Sort -->
+                    <th onclick="submitform('get1')">
+                        <!-- Title -->
+                        <b>Deparment ID</b>
+                        <!-- Form to Request Sort -->
+                        <form action="/listDepartments" name="get1" method="post">
+                            <!-- Hidden Input with Sort Value -->
+                            <input type="hidden" name="orderby" value="did ASC"/>
+                        </form>
+                    </th>
+                    <th onclick="submitform('get2')">
+                        <!-- Title -->
+                        <b>Deparment ID</b>
+                        <!-- Form to Request Sort -->
+                        <form action="/listDepartments" name="get2" method="post">
+                            <!-- Hidden Input with Sort Value -->
+                            <input type="hidden" name="orderby" value="name ASC"/>
+                        </form>
+                    </th>
+                    <th><b>Action</b></th>
+                </tr>
+                <!-- Display each Department -->
+                <% departments.forEach((department) => { %>
+                    <!-- New Table Row -->
+                    <tr>
+                        <!-- Table Data -->
+                        <td><%= department.did%></td>
+                        <td><%= department.name%></td>
+                        <td><a href="/departments/delete/<%= department.did %>">Delete</td>
+                    </tr>
+                <% }) %>
+            </table>
+            <!-- Button Form -->
+            <form action="/addDepartment" method="GET">
+                <!-- Submit Button -->
+                <input type="submit" value="Add" class="button"/>
+                <!-- Home Button, Redirects to Home Page -->
+                <input type="button" value="Home" onclick="location.href='http://localhost:3000/'" class="button">
+            </form>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <!-- Import Styling -->
+        <link href="/styles/form.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <!-- Header -->
+        <h1>Department</h1>
+        <!-- If Errors exist display here -->
+        <% if(errors != undefined) {%>
+            <ul class="errors">
+                <% errors.forEach((error) => { %>
+                    <li><%= error.msg %></li>
+                <% }) %>
+            </ul>
+        <% } %>
+        <!-- Form Section -->
+        <section>
+            <form action="/addDepartment" method="post">
+                <!-- Department ID -->
+                <div class="row">
+                    <div class="col1">
+                        <!-- Label -->
+                        <label>Department ID</label>
+                    </div>
+                    <div class="col2">
+                        <!-- Input -->
+                        <input type="text" name="did" value="<%= did %>"><br>
+                    </div>
+                </div>
+
+                <!-- Department Name -->
+                <div class="row">
+                    <div class="col1">
+                        <!-- Label -->
+                        <label>Name</label>
+                    </div>
+                    <div class="col2">
+                        <!-- Input -->
+                        <input type="text" name="name" value="<%= name %>"><br>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="row">
+                    <!-- Submit Button -->
+                    <input type="submit" value="Add" class="buttons"/>
+                    <!-- Home Button, Redirects to Home Page -->
+                    <input type="button" value="Home" onclick="location.href='http://localhost:3000/';" class="buttons"/>
+                </div>
+            </form>
+        </section>
+    </body>
+</html>
