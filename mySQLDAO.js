@@ -8,7 +8,7 @@ mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: '1234',
+    password: '', //May Need to Change this depending on system states
     database: 'collegedb'
 })
     // connection succeeds

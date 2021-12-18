@@ -43,3 +43,10 @@ h2{
     text-align: center;
     text-shadow: 1px 1px teal;
 }
+#footer{
+    text-align: center;
+    color: aliceblue;
+    position: fixed;
+    padding: 10px 10px 0 10px;
+    bottom: 0;
+}
